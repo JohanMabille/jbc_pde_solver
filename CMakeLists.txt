@@ -23,6 +23,10 @@ endif()
 set(PDE_SOLVER_SRCS
     closed_form.hpp
     closed_form.cpp
+    Solver.h
+    Solver.cpp
+    Matrix.h
+    Matrix.cpp
     main.cpp
 )
 
