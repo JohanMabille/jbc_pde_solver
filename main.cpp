@@ -37,6 +37,7 @@ int main(int argc, const char * argv[]){
         " of which time value (spot): " << dauphine::bs_time_value(10.*i,K,sig,matu,(float) r,true) << std::endl;
     }
 
+
     /*
     Solver s(100.,sig,matu,r,10,40,0.5);
     auto res = s.solve_BS_theta0(K, true);
@@ -64,8 +65,6 @@ int main(int argc, const char * argv[]){
     std::cout << test2.to_string() << std::endl;
     std::cout << ((test * 2.231) * (test + 1.2)).transpose().to_string() << std::endl;
     std::cout << (test.dot(test2)).to_string() << std::endl;
-
-
 
     return 0;
 }
