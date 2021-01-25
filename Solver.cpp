@@ -142,15 +142,9 @@ std::vector<std::vector<double> > Solver::solve_BS_theta0(double strike, bool is
         }
         double temp3[3] {m_res[m_spot_points-2][i+1], m_res[m_spot_points-1][i+1], m_res[m_spot_points][i+1]};
         m_res[m_spot_points][i]  = compute_vertex_theta0_edge(temp3);
-
-        }
-
     }
-
     return m_res;
 }
-
-
 
 Solver::~Solver()
 {

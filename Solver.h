@@ -36,14 +36,11 @@ class Solver{
         double m_coeffs_theta0[3];
         double m_coeffs_theta0_edge[3];
 
-        std::vector<std::vector<double> > m_res;
-
         double compute_vertex(double values[][2], int di, int dn);
         double compute_vertex_theta0(double values[]);
         double compute_vertex_theta0_edge(double values[]);
   
         std::vector<std::vector<double> > m_res;
-
 };
 
 #endif // SOLVER_H
