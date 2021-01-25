@@ -22,6 +22,7 @@ class Solver{
   
         std::vector<std::vector<double> > solve_BS(double strike, bool is_call);
         std::vector<std::vector<double> > solve_BS_theta0(double strike, bool is_call);
+		std::vector<std::vector<double> > solve_matrix(double strike, bool is_call);
 
         virtual ~Solver();
 
@@ -41,8 +42,8 @@ class Solver{
         double compute_vertex(double values[][2], int di, int dn);
         double compute_vertex_theta0(double values[]);
         double compute_vertex_theta0_edge(double values[]);
-  
-        std::vector<std::vector<double> > m_res;
+		
+        //std::vector<std::vector<double> > m_res;
 
 };
 

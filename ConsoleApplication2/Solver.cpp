@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "Solver.h"
 #include "closed_form.hpp"
 #include <math.h>
@@ -72,7 +74,7 @@ Solver::Solver(double spot, double volatility, double maturity, float interest_r
         }
         std::cout << std::endl;
     }
-
+	std::cout << "end constructor" << std::endl;
 }
 
 double Solver::compute_vertex(double values[][2], int di, int dn){
@@ -80,12 +82,12 @@ double Solver::compute_vertex(double values[][2], int di, int dn){
     for(int i=0;i<3;i++){
         for(int n=0;n<2;n++){
             if(di!=i || dn!=n){
-                std::cout << m_coeffs[i][n] << " * " << values[i][n] << std::endl;
+                //std::cout << m_coeffs[i][n] << " * " << values[i][n] << std::endl;
                 tot+=m_coeffs[i][n] * values[i][n];
             }
         }
     }
-    std::cout << "tot: " << tot << std::endl;
+    //std::cout << "tot: " << tot << std::endl;
     return -tot/m_coeffs[di][dn];
 }
 
@@ -93,7 +95,7 @@ double Solver::compute_vertex_theta0(double values[]){
     double tot=0;
     for(int i=0;i<3;i++)
         tot+=m_coeffs_theta0[i] * values[i];
-    std::cout << "tot: " << tot << std::endl;
+    //std::cout << "tot: " << tot << std::endl;
     return tot;
 }
 
@@ -101,10 +103,12 @@ double Solver::compute_vertex_theta0_edge(double values[]){
     double tot=0;
     for(int i=0;i<3;i++)
         tot+=m_coeffs_theta0_edge[i] * values[i];
-    std::cout << "tot edge: " << tot << std::endl;
+    //std::cout << "tot edge: " << tot << std::endl;
   
     return tot;
 }
+
+
 
 std::vector<std::vector<double> > Solver::solve_BS(double strike, bool is_call){
 
@@ -129,21 +133,27 @@ std::vector<std::vector<double> > Solver::solve_BS(double strike, bool is_call){
 
 std::vector<std::vector<double> > Solver::solve_BS_theta0(double strike, bool is_call){
 //    std::cout << "min_space, max_space= " << min_space << ", " << max_space << std::endl;
-    for(int i=0;i<=m_spot_points;i++)
-        m_res[i][m_time_points] = dauphine::vanilla_payoff(exp(m_max_space-i*m_dx),strike,is_call);
-
-    for(int i=m_time_points-1;i>=0;i--){
+	for (int i = 0; i <= m_spot_points; i++)
+	{
+		m_res[i][m_time_points] = dauphine::vanilla_payoff(exp(m_max_space - i*m_dx), strike, is_call);
+		std::cout << "Payoff[" << i << "] = " << m_res[i][m_time_points] << std::endl;
+	}
+        
+	
+    for(int i=m_time_points-1;i>=0;i--)
+	{
         double temp[3] {m_res[2][i+1], m_res[1][i+1], m_res[0][i+1]};
         m_res[0][i]  = compute_vertex_theta0_edge(temp);
-
-        for(int j=1;j<m_spot_points;j++){
+		//std::cout << "Price[0," << i << "] = " << m_res[0][i] << std::endl;
+        for(int j=1;j<m_spot_points;j++)
+		{
             double temp2[3] {m_res[j-1][i+1], m_res[j][i+1], m_res[j+1][i+1]};
             m_res[j][i] = compute_vertex_theta0(temp2);
+			//std::cout << "Price[" << j << "," << i << "] = " << m_res[j][i] << std::endl;
         }
         double temp3[3] {m_res[m_spot_points-2][i+1], m_res[m_spot_points-1][i+1], m_res[m_spot_points][i+1]};
         m_res[m_spot_points][i]  = compute_vertex_theta0_edge(temp3);
-
-        }
+		//std::cout << "Price[" << m_spot_points << "," << i << "] = " << m_res[m_spot_points][i] << std::endl;
 
     }
 

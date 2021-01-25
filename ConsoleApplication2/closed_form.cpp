@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "closed_form.hpp"
 #include <math.h>
 #include <algorithm>
