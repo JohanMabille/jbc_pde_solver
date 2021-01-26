@@ -10,7 +10,9 @@ class Solver{
     public:
   
         explicit Solver(double spot, double volatility, double maturity, float interest_rate, int time_points, int spot_points, double theta);
-  
+		//Solver(double spot, double volatility, double maturity, float interest_rate, int time_points, int spot_points, double theta);
+		Solver() {}
+
         template<typename T>
         static void print_vector_array(std::vector<std::vector<T> > to_print){
             for(auto line: to_print){
@@ -22,7 +24,7 @@ class Solver{
   
         std::vector<std::vector<double> > solve_BS(double strike, bool is_call);
         std::vector<std::vector<double> > solve_BS_theta0(double strike, bool is_call);
-		std::vector<std::vector<double> > solve_matrix(double strike, bool is_call);
+		//std::vector<std::vector<double> > solve_matrix(double strike, bool is_call);
 
         virtual ~Solver();
 

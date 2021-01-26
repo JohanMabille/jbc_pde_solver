@@ -4,6 +4,7 @@
 #include "closed_form.hpp"
 #include <math.h>
 
+
 Solver::Solver(double spot, double volatility, double maturity, float interest_rate, int time_points, int spot_points, double theta):
     m_spot(spot), m_vol(volatility), m_matu(maturity), m_ir(interest_rate), m_time_points(time_points), m_spot_points(spot_points), m_theta(theta) {
     m_min_time = 0.;
@@ -74,6 +75,7 @@ Solver::Solver(double spot, double volatility, double maturity, float interest_r
         }
         std::cout << std::endl;
     }
+	std::cout << "m_spot constructor 1 = " << m_spot << std::endl;
 	std::cout << "end constructor" << std::endl;
 }
 
@@ -164,5 +166,6 @@ std::vector<std::vector<double> > Solver::solve_BS_theta0(double strike, bool is
 
 Solver::~Solver()
 {
-    //dtor
+	std::cout << "destructor called" << std::endl;
+	std::cout << "m_spot = " << m_spot << std::endl;
 }

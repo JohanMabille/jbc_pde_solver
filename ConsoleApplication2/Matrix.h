@@ -28,6 +28,8 @@ class Matrix
 
         Matrix transpose() const;
         Matrix dot(const Matrix &B) const;
+		Matrix column(int j);
+		void fill_column(int j, const Matrix data);
         Matrix operator*(const Matrix &B) const;
         Matrix operator*(const T &scal) const;
         Matrix operator+(const Matrix &B) const;
@@ -35,7 +37,6 @@ class Matrix
 		T operator()(int i, int j) const; 
 
 		//void test(); 
-
         virtual ~Matrix();
 
     protected:

@@ -1,2 +1,5 @@
-﻿  ConsoleApplication2.vcxproj -> C:\Users\benja\OneDrive\Documents\Dauphine\Master2\Semestre1\Cpp\Projet\git_groupe\jbc_pde_solver\ConsoleApplication2\Debug\ConsoleApplication2.exe
+﻿  ConsoleApplication2.cpp
+c:\users\benja\onedrive\documents\dauphine\master2\semestre1\cpp\projet\git_groupe\jbc_pde_solver\consoleapplication2\consoleapplication2.cpp(19): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\benja\onedrive\documents\dauphine\master2\semestre1\cpp\projet\git_groupe\jbc_pde_solver\consoleapplication2\consoleapplication2.cpp(53): warning C4305: 'initializing': truncation from 'double' to 'float'
+  ConsoleApplication2.vcxproj -> C:\Users\benja\OneDrive\Documents\Dauphine\Master2\Semestre1\Cpp\Projet\git_groupe\jbc_pde_solver\ConsoleApplication2\Debug\ConsoleApplication2.exe
   ConsoleApplication2.vcxproj -> C:\Users\benja\OneDrive\Documents\Dauphine\Master2\Semestre1\Cpp\Projet\git_groupe\jbc_pde_solver\ConsoleApplication2\Debug\ConsoleApplication2.pdb (Full PDB)

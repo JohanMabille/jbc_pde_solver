@@ -196,7 +196,7 @@ Matrix<T> Matrix<T>::inverse()
 		i++;
 		//Id->display();
 	}
-
+	delete Rhs; 
 	return *Id;
 }
 
@@ -219,6 +219,22 @@ Matrix<T> Matrix<T>::dot(const Matrix &B) const
 		}
 	}
     return *res;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::column(int j)
+{
+	Matrix<T>* res = new Matrix<T>(m_rows, 1);
+	for (int i = 0; i < m_rows; i++)
+		res->set_elem_at(i, 0, elem_at(i, j));
+	return *res;
+}
+
+template <typename T>
+void Matrix<T>::fill_column(int j, const Matrix<T> data)
+{
+	for (int i = 0; i < m_rows; i++)
+		set_elem_at(i, j, data.elem_at(i, 0));
 }
 
 //Hadamard product
@@ -269,6 +285,7 @@ T Matrix<T>::operator()(int i, int j) const
 	//return this->elem_at(i, j);
 	return m_data[i * m_cols + j];
 }
+
 
 template <typename T>
 Matrix<T>::~Matrix(){
