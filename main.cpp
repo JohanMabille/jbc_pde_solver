@@ -1,6 +1,6 @@
 #include "closed_form.hpp"
-#include "Solver.h"
-#include "Matrix.h"
+#include "solver.hpp"
+#include "matrix.hpp"
 #include <iostream>
 
 // Guidelines:
@@ -23,48 +23,60 @@
 // to call an external function between each step. Define an API
 // that allows to register a function or an abstract class modeling
 // a payoff.
-int main(int argc, const char * argv[]){
+
+
+void test_matrix() {
+	Matrix<double> M = Matrix<double>(3);
+
+	M.set_elem_at(1, 1, 8.5);
+	M.set_elem_at(0, 1, 1.5);
+	M.set_elem_at(0, 2, 0.3);
+	M.set_elem_at(2, 1, -5);
+	M.set_elem_at(2, 2, 8.5);
+	M.display();
+	
+	Matrix<double> N = M.inverse();
+	N.display();
+
+	Matrix<double> P = N.dot(M);
+	P.display();
+
+	std::cout << "Test matrix is finished" << std::endl;
+}
+
+void test_solver() {
+	double spot = 100.;
+	double volatility = 0.16;
+	double maturity = 0.25;
+	float interest_rate = 0.04;
+	int spot_points = 16;
+	int time_points = 16;
+	double theta = 0.5;
+	double strike = 100.;
+	bool is_call = true;
+
+	Solver mysolver = Solver(spot, volatility, maturity, interest_rate, time_points, spot_points, theta);
+	Matrix<double> M = mysolver.solve(strike, is_call);
+}
+
+
+int main(int argc, const char * argv[]) {
     double K = 100.;
     double sig = 0.16;
     double matu = 10./365.;
     double r = 0.0;
 
-    for(int i=0;i<-1;i++){
-        std::cout <<
-        "Forward/Spot price: " << 10.*i << ", call price (fwd): " << dauphine::bs_price(10.*i,K,sig,matu,r,true) <<
-        " of which time value (fwd): " << dauphine::bs_time_value(10.*i,K,sig,matu,r,true) <<
-        ", call price (spot): " << dauphine::bs_price(10.*i,K,sig,matu,(float) r,true) <<
-        " of which time value (spot): " << dauphine::bs_time_value(10.*i,K,sig,matu,(float) r,true) << std::endl;
-    }
+	for (double i = 5.; i <= 15.; i = i + 1.) {
+    	std::cout << "Forward/Spot price: " << 10. * i << ", call price (fwd): " << dauphine::bs_price(10. * i, K, sig, matu, r, true)
+			  	  << " of which time value (fwd): " << dauphine::bs_time_value(10. * i, K, sig, matu, r, true)
+			  	  << ", call price (spot): " << dauphine::bs_price(10. * i, K, sig, matu, (float) r, true)
+			  	  << " of which time value (spot): " << dauphine::bs_time_value(10. * i, K, sig, matu,(float) r, true)
+			  	  << std::endl;
+	}
 
+	test_matrix();
 
-    /*
-    Solver s(100.,sig,matu,r,10,40,0.5);
-    auto res = s.solve_BS_theta0(K, true);
-    Solver::print_vector_array(res);
-
-    std::cout << res[26][0] << std::endl;
-    */
-
-    Matrix<double> iden(6);
-    std::cout << iden.to_string() << std::endl;
-
-    std::cout << "elem at 2,2: "<< iden.elem_at(2,2) << std::endl;
-    iden.set_elem_at(2,2,8);
-    std::cout << "elem at 2,2: "<< iden.elem_at(2,2) << std::endl;
-
-    iden.set_elem_at(2,2,8)->set_elem_at(3,2,-4)->set_elem_at(4,1,3);
-    std::cout << iden.to_string() << std::endl;
-
-    Matrix<double> test(4);
-    test.set_elem_at(2,3,8.)->set_elem_at(1,2,-4.)->set_elem_at(0,3,5.);
-
-    Matrix<double> test2(4,2);
-    test2.set_elem_at(3,1,1.5)->set_elem_at(1,1,-2.35)->set_elem_at(0,0,5.1);
-    std::cout << test.to_string() << std::endl;
-    std::cout << test2.to_string() << std::endl;
-    std::cout << ((test * 2.231) * (test + 1.2)).transpose().to_string() << std::endl;
-    std::cout << (test.dot(test2)).to_string() << std::endl;
+	test_solver();
 
     return 0;
 }
