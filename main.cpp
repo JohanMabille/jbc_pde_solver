@@ -29,6 +29,7 @@ int main(int argc, const char * argv[]){
     double matu = 10./365.;
     double r = 0.0;
 
+    /*
     for(int i=0;i<-1;i++){
         std::cout <<
         "Forward/Spot price: " << 10.*i << ", call price (fwd): " << dauphine::bs_price(10.*i,K,sig,matu,r,true) <<
@@ -36,16 +37,16 @@ int main(int argc, const char * argv[]){
         ", call price (spot): " << dauphine::bs_price(10.*i,K,sig,matu,(float) r,true) <<
         " of which time value (spot): " << dauphine::bs_time_value(10.*i,K,sig,matu,(float) r,true) << std::endl;
     }
-
-
-    /*
-    Solver s(100.,sig,matu,r,10,40,0.5);
-    auto res = s.solve_BS_theta0(K, true);
-    Solver::print_vector_array(res);
-
-    std::cout << res[26][0] << std::endl;
     */
 
+
+    Solver s(100.,sig,matu,r,10,20,0.5);
+    auto res = s.solve_BS(K, true);
+    std::cout << res.extract_column(20).to_string() << std::endl;
+    std::cout << res.extract_column(0).to_string() << std::endl;
+    std::cout << res.to_string() << std::endl;
+
+    /*
     Matrix<double> iden(6);
     std::cout << iden.to_string() << std::endl;
 
@@ -65,6 +66,11 @@ int main(int argc, const char * argv[]){
     std::cout << test2.to_string() << std::endl;
     std::cout << ((test * 2.231) * (test + 1.2)).transpose().to_string() << std::endl;
     std::cout << (test.dot(test2)).to_string() << std::endl;
+
+
+    std::cout << test.inverse().to_string() << std::endl;
+    std::cout << (test.dot(test.inverse())).to_string() << std::endl;
+    */
 
     return 0;
 }
