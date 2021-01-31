@@ -5,7 +5,7 @@
 
 class Solver {
 	public:
-		explicit Solver(double spot, double volatility, double maturity, float interest_rate, int time_points, int spot_points, double theta);
+		explicit Solver(double spot, double volatility, double maturity, float interest_rate, ul time_points, ul spot_points, double theta);
 		~Solver();
 
 		Matrix<double> solve(double strike, bool is_call);
@@ -21,7 +21,7 @@ class Solver {
     	double m_min_time, m_max_time, m_dt;
     	double m_std_dev;
     	double m_min_space, m_max_space, m_dx;
-    	int m_spot_points, m_time_points;
+    	ul m_spot_points, m_time_points;
 };
 
 #endif

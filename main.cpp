@@ -48,9 +48,9 @@ void test_solver() {
 	double spot = 100.;
 	double volatility = 0.16;
 	double maturity = 0.25;
-	float interest_rate = 0.04;
-	int spot_points = 16;
-	int time_points = 16;
+	float interest_rate = (float) 0.04;
+	ul spot_points = 16;
+	ul time_points = 16;
 	double theta = 0.5;
 	double strike = 100.;
 	bool is_call = true;
