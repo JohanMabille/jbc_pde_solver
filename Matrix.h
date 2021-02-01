@@ -2,7 +2,6 @@
 #define MATRIX_H
 #include <string>
 
-
 template <typename T=double>
 class Matrix
 {
