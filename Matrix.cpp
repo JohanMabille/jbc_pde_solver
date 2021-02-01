@@ -3,7 +3,7 @@
 #include <math.h>
 
 template <typename T>
-Matrix<T>::Matrix(){
+Matrix<T>::Matrix() : m_rows(0), m_cols(0), m_data(nullptr) {
 }
 
 template <typename T>
@@ -203,7 +203,7 @@ template <typename T>
 Matrix<T>& Matrix<T>::operator=(const Matrix &cop){
     m_rows=cop.m_rows;
     m_cols=cop.m_cols;
-    //delete m_data ????????
+    delete[] m_data;
     m_data = new T[m_rows*m_cols];
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++)
