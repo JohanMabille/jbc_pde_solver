@@ -171,7 +171,6 @@ void Solver::displayValues(){
     std::cout << "Rho: " << getRho() << std::endl;
     std::cout << std::endl;
 }
-Solver::~Solver()
-{
+Solver::~Solver(){
 
 }
