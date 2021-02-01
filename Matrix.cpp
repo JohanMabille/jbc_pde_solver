@@ -1,11 +1,9 @@
 #include "Matrix.h"
-#include <iostream>
 #include <stdexcept>
 #include <math.h>
 
 template <typename T>
 Matrix<T>::Matrix(){
-    //ctor
 }
 
 template <typename T>

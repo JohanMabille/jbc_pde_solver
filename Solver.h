@@ -2,43 +2,46 @@
 #define SOLVER_H
 
 #include <iostream>
-#include <algorithm>
-#include <iterator>
 #include <vector>
 #include "Matrix.h"
+#include "Volatility.h"
+#include "InterestRates.h"
+#include "Payoff.h"
 
 class Solver{
     public:
-        explicit Solver(double spot, double volatility, double maturity, float interest_rate, int time_points, int spot_points, double theta);
+        explicit Solver(double spot, Volatility* volatility, double maturity, InterestRates* interest_rate, int time_points, int spot_points, Payoff* payoff, double theta);
+        explicit Solver(double spot, Volatility* volatility, double maturity, float interest_rate, int time_points, int spot_points, Payoff* payoff, double theta);
+        explicit Solver(double spot, double volatility, double maturity, InterestRates* interest_rate, int time_points, int spot_points, Payoff* payoff, double theta);
+        explicit Solver(double spot, double volatility, double maturity, float interest_rate, int time_points, int spot_points, Payoff* payoff, double theta);
 
-        template<typename T>
-        static void print_vector_array(std::vector<std::vector<T> > to_print){
-            for(auto line: to_print){
-                std::cout << "[";
-                std::copy(line.begin(), line.end(), std::ostream_iterator<T>(std::cout, ", "));
-                std::cout << "]" << std::endl;
-            }
-        }
-        Matrix<double> solve_BS(double strike, bool is_call);
-        std::vector<std::vector<double> > solve_BS_theta0(double strike, bool is_call);
+        Matrix<double> solve(bool verbose=false);
+        double getPrice();
+        double getDelta();
+        double getGamma();
+        double getTheta();
+        double getVega();
+        double getRho();
+
+        void displayValues();
+
         virtual ~Solver();
 
     protected:
-        double m_spot, m_vol, m_matu, m_ir, m_theta;
+        double m_spot, m_matu, m_theta;
         double m_min_time, m_max_time, m_dt;
         double m_std_dev;
         double m_min_space, m_max_space, m_dx;
         int m_spot_points, m_time_points;
 
-        Matrix<double> m_transition_matrix;
-        double m_coeffs_theta0[3];
-        double m_coeffs_theta0_edge[3];
+        Volatility* m_vol;
+        InterestRates* m_ir;
+        Payoff* m_payoff;
 
-        std::vector<std::vector<double> > m_res;
+        Matrix<double> m_res;
 
-        double compute_vertex(double values[][2], int di, int dn);
-        double compute_vertex_theta0(double values[]);
-        double compute_vertex_theta0_edge(double values[]);
+        bool m_computed;
+
 };
 
 #endif // SOLVER_H
