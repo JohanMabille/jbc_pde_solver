@@ -27,6 +27,12 @@ set(PDE_SOLVER_SRCS
     Solver.cpp
     Matrix.h
     Matrix.cpp
+    Payoff.h
+    Payoff.cpp
+    Volatility.h
+    Volatility.cpp
+    InterestRates.h
+    InterestRates.cpp
     main.cpp
 )
 
