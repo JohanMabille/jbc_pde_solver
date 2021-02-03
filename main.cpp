@@ -15,6 +15,8 @@ int main(int argc, const char * argv[]){
     double matu = 0.25;
     double r = 0.02;
 
+    // The number of spots points is a bit lof, you can get better accuracy with 501 or even 1001 points
+    // (typical values in PDE solvers)
     Solver s1(100.,new ConstantVolatility(sig),matu,new ConstantIR(r),100,101,new VanillaCall(K),0.5);
     auto res1 = s1.solve(true);
     s1.displayValues();
