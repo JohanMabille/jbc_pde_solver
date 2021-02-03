@@ -2,6 +2,11 @@
 #include <math.h>
 #include <algorithm>
 
+// Empty consturctors and destructors
+// can be declared with = default; in
+// the header. This way you don't have
+// to write the trivial implementation
+// here.
 Payoff::Payoff(){
 
 }
