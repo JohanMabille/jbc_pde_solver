@@ -25,6 +25,7 @@ class Solver{
 
         void displayValues();
 
+        // Why virtual?
         virtual ~Solver();
 
     protected:
