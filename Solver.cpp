@@ -20,6 +20,8 @@ Solver::Solver(double spot, Volatility* volatility, double maturity, InterestRat
     m_dx = (m_max_space-m_min_space)/double(m_spot_points);
 }
 
+// All these constructors lead to memory leaks since the destructor of Solver
+// does not delete anything.
 Solver::Solver(double spot, double volatility, double maturity, float interest_rate, int time_points, int spot_points, Payoff* payoff, double theta) :
 Solver::Solver(spot, new ConstantVolatility(volatility), maturity, new ConstantIR(interest_rate), time_points, spot_points, payoff, theta){
 
@@ -87,6 +89,13 @@ Matrix<double> Solver::solve(bool verbose){
     if(verbose){
         double strike(-1);
         bool is_call(false);
+        // Hierarchy of classes are meant to avoid this kind of code; prefer
+        // adding virtual methods (such as is_call for instance) to avoid
+        // dynamic cast. If for any reason you still have to dynamic_cast,
+        // prefer casting the pointer and test if it's null rather than
+        // casting the reference and catching the exception (eception
+        // are usually bad for performance, although it does not make
+        // a difference here since you use IO operations)
         try{
             VanillaCall* tempcall = dynamic_cast<VanillaCall*>(m_payoff);
             strike = tempcall->getStrike();
@@ -171,6 +180,11 @@ void Solver::displayValues(){
     std::cout << "Rho: " << getRho() << std::endl;
     std::cout << std::endl;
 }
+
+// Ownership is not clear: should Solver delete all
+// its pointer members (in that case you have to implement
+// copy smeantics and move semantics) or not? (in that case
+// your consturctors lead to memory leaks)
 Solver::~Solver(){
 
 }

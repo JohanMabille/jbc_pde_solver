@@ -2,12 +2,21 @@
 #include <stdexcept>
 #include <math.h>
 
+// The implementation of template classes usually goes
+// into the hpp instead of the cpp. Otherwise, you
+// have to explicitly instantiate the code for a given
+// set of types to avoid link errors, which limits the usage
+// of the template (typically I cannot use this class with
+// arbitrary precision floating point numbers).
 template <typename T>
 Matrix<T>::Matrix() : m_rows(0), m_cols(0), m_data(nullptr) {
 }
 
 template <typename T>
 Matrix<T>::Matrix(int M, int N): m_rows(M), m_cols(N), m_data(new T[M * N]) {
+    // You can simplify (se third course about STL):
+    // std::fill(m_data, m_data + M * N, T());
+    // Or even better, use std::vector
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++)
             m_data[i * m_cols + j] =  T();
@@ -23,6 +32,8 @@ Matrix<T>::Matrix(int N): m_rows(N), m_cols(N), m_data(new T[N * N]) {
 
 template <typename T>
 Matrix<T>::Matrix(int M, int N, T* dat): m_rows(M), m_cols(N), m_data(new T[M * N]) {
+    // You cna simplify (see slides about STL):
+    // std::copy(dat, dat + M*N, m_data)
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++)
             m_data[i * m_cols + j] =  dat[i * m_cols + j];
@@ -56,6 +67,7 @@ Matrix<T>* Matrix<T>::set_elem_at(int i, int j, T val){
 
 template <typename T>
 Matrix<T> Matrix<T>::transpose() const{
+    // YOu never delete res => memory leak
     Matrix<T>* res = new Matrix<T>(m_cols,m_rows);
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++){
@@ -161,6 +173,7 @@ Matrix<T> Matrix<T>::inverse() const{
 //Hadamard product
 template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix &B) const{
+    // You never delete res => memory leak
     Matrix<T>* res = new Matrix<T>(m_rows,m_cols);
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++){
@@ -171,6 +184,7 @@ Matrix<T> Matrix<T>::operator*(const Matrix &B) const{
 
 template <typename T>
 Matrix<T> Matrix<T>::operator*(const T &scal) const{
+    // You never delete res => memory leak
     Matrix<T>* res = new Matrix<T>(m_rows,m_cols);
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++){
@@ -181,6 +195,7 @@ Matrix<T> Matrix<T>::operator*(const T &scal) const{
 
 template <typename T>
 Matrix<T> Matrix<T>::operator+(const Matrix &B) const{
+    // You never delete res => memory leak
     Matrix<T>* res = new Matrix<T>(m_rows,m_cols);
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++){
@@ -191,6 +206,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix &B) const{
 
 template <typename T>
 Matrix<T> Matrix<T>::operator+(const T &scal) const{
+    // You never delete res => memory leak
     Matrix<T>* res = new Matrix<T>(m_rows,m_cols);
     for(int i = 0; i < m_rows; i++)
         for(int j = 0; j < m_cols; j++){
@@ -203,6 +219,13 @@ template <typename T>
 Matrix<T>& Matrix<T>::operator=(const Matrix &cop){
     m_rows=cop.m_rows;
     m_cols=cop.m_cols;
+    //wrong implementation:
+    // if &cop == this, you delete cop.m_data
+    // and cannot copy it anymore
+    // Review the course about types, there are
+    // slides dedicated to this problem and how
+    // to correctly implement an assign operator
+    // (copy and swap idiom)
     delete[] m_data;
     m_data = new T[m_rows*m_cols];
     for(int i = 0; i < m_rows; i++)

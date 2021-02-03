@@ -21,6 +21,11 @@ namespace dauphine{
     }
 
     double bs_price(double fwd, double strike, double volatility, double maturity, double discount_rate, bool is_call){
+        // This implmeentation is less stable than the previous one (you can have
+        // oscillations on the wings).
+        // THe initial implementation was the non discounted function of the forward, it didn't need any fix
+        // just call it with the forward instead of the spot, and discount the price.
+        // This makes the implementation independent form the rate
         double discount_factor = exp(-discount_rate*maturity);
         if(strike == 0.){
             return discount_factor*vanilla_payoff(fwd,strike,is_call);
